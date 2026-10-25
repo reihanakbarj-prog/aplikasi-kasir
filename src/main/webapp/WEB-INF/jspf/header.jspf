@@ -1,0 +1,46 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="in_ID"/>
+<%
+  String _nama = (String) (session != null ? session.getAttribute("user") : null);
+  String _av = (_nama != null && !_nama.isEmpty())
+      ? String.valueOf(Character.toUpperCase(_nama.charAt(0))) : "U";
+%>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sistem Kasir</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=4">
+</head>
+<body>
+<c:if test="${not empty sessionScope.user}">
+<nav class="nav no-print">
+  <a class="nav-brand" href="${pageContext.request.contextPath}/dashboard">
+    <div class="nav-brand-icon">K</div>
+    <span class="nav-brand-name">Sistem Kasir</span>
+  </a>
+  <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
+  <a href="${pageContext.request.contextPath}/kasir">Kasir</a>
+  <a href="${pageContext.request.contextPath}/produk">Produk</a>
+  <a href="${pageContext.request.contextPath}/riwayat">Riwayat</a>
+  <c:if test="${sessionScope.role == 'admin'}">
+    <a href="${pageContext.request.contextPath}/users">Users</a>
+  </c:if>
+  <span class="sp"></span>
+  <div class="nav-right">
+    <c:if test="${sessionScope.role == 'admin'}">
+      <span class="badge-pill admin">Admin</span>
+    </c:if>
+    <span class="badge-pill user"><%= _av %>&nbsp;<c:out value="${sessionScope.user}"/></span>
+    <a href="${pageContext.request.contextPath}/logout" class="btn sm danger no-print">Keluar</a>
+  </div>
+</nav>
+</c:if>
+<div class="wrap">
+<c:if test="${not empty sessionScope.flash}">
+  <div class="flash no-print"><c:out value="${sessionScope.flash}"/></div>
+  <c:remove var="flash" scope="session"/>
+</c:if>
